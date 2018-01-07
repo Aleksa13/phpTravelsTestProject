@@ -16,37 +16,8 @@ import static org.testng.Assert.assertTrue;
 /**
  * Created by Aleksandra on 06.01.18.
  */
-public class phpTravelersTest {
-        private WebDriver driver;
+public class phpTravelersTest extends BaseTest {
 
-        @BeforeClass(alwaysRun= true)
-        public void setUp()
-        {
-            //Open chrome browser
-            System.setProperty("webdriver.chrome.driver", "chromedriver");
-            driver = new ChromeDriver();
-
-            //Maximize window
-            driver.manage().window().maximize();
-            //Set timeouts
-            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        }
-
-        @BeforeMethod(alwaysRun = true)
-        public void openMainPage(){
-            //Open ss.com page
-            driver.get("http://phptravels.net/admin");
-
-        }
-
-        @AfterClass(alwaysRun = true)
-        public void tearDown()
-
-        {
-            //Close browse
-            driver.quit();
-
-        }
 
     @Test
     public void mainPageTest() {
@@ -58,12 +29,12 @@ public class phpTravelersTest {
 
     }
 
-    @Test
-    public void adminLoginTest () throws InterruptedException {
+    @Test(dataProvider = "Login", dataProviderClass = TestDataProvider.class)
+    public void adminLoginTest (String email, String pass) throws InterruptedException {
         LoginPage loginPage = new LoginPage(driver);
 
-        loginPage.enterEmail("admin@phptravels.com")
-                .enterPassword("demoadmin")
+        loginPage.enterEmail(email)
+                .enterPassword(pass)
                 .clickLogin();
 
         Thread.sleep(2000);
@@ -77,18 +48,7 @@ public class phpTravelersTest {
 
 
 
-
-    @DataProvider(name = "Authentication")
-    public static Object[][] credentials() {
-
-        return new Object[][] {
-                { "demo@phptravels.com", "demoadmin" },
-                { "admin@phptravels.com", "demoaasfdmin" }};
-
-    }
-
-
-    @Test(dataProvider = "Authentication", dataProviderClass = phpTravelersTest.class)
+    @Test(dataProvider = "Authentication", dataProviderClass = TestDataProvider.class)
     public void adminNegativeLoginTest (String email, String pass) throws InterruptedException {
         LoginPage loginPage = new LoginPage(driver);
 
