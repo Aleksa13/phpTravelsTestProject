@@ -23,9 +23,10 @@ public class phpJourney extends BaseTest {
     }
 
     @Test //(dataProvider = "Hotels", dataProviderClass = TestDataProvider.class)
-    public void hotelsTest (int checkinDate , int checkOutDate) throws InterruptedException {
+    public void hotelsTest (//int checkinDate , int checkOutDate)
+                            )throws InterruptedException {
         //check Hotels
-        WebElement hotelTitle = driver.findElement(By.cssSelector("li.text-center.active"));
+        WebElement hotelTitle = driver.findElement(By.cssSelector("div.RTL_Bar.searcharea > div > ul > li.active > a"));
         hotelTitle.click();
 
         WebElement enterCity = driver.findElement(By.cssSelector("div #citiesInput"));
@@ -36,13 +37,13 @@ public class phpJourney extends BaseTest {
         WebElement checkInDate = driver.findElement(By.cssSelector("#dpean1 > input"));
         checkInDate.click();
         checkInDate.clear();
-        checkInDate.sendKeys("01/25/2018");
+        checkInDate.sendKeys("01/23/2018");
 
 
         WebElement checkOutDate =driver.findElement(By.cssSelector("#dpd2 > input"));
         checkOutDate.click();
         checkOutDate.clear();
-        checkOutDate.sendKeys("02/10/2018");
+        checkOutDate.sendKeys("01/31/2018");
         //checkInDate.click();
 
 
@@ -77,6 +78,12 @@ public class phpJourney extends BaseTest {
         String url = driver.getCurrentUrl();
         assertTrue(url.contains( "http://www.phptravels.net/properties/search?city="), "phpSearch page opened fail");
     }
+
+
+//    @Test
+//    public void FlightsTest() throws InterruptedException {
+
+
 
 
 }
