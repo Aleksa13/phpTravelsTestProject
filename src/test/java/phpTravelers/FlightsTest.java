@@ -18,14 +18,15 @@ import static org.testng.Assert.assertTrue;
  * Created by Aleksandra on 07.01.18.
  */
 public class FlightsTest extends BaseTest {
+    FlightPage flyingPage;
 
         @BeforeMethod(alwaysRun = true)
-    public void openMainPage(){
-        //Open page
-        driver.get("http://www.phptravels.net/");
+
+        public void openMainPage() throws InterruptedException {
+            flyingPage = new FlightPage(driver);
+            flyingPage.openPage("http://www.phptravels.net/");
 
   }
-
 
     @Test
     public void mainPageTest() {
@@ -37,8 +38,7 @@ public class FlightsTest extends BaseTest {
 
     @Test
     public void FlightsTest () throws InterruptedException {
-        WebElement flightTitle = driver.findElement(By.cssSelector("div.RTL_Bar.searcharea > div > ul > li:nth-child(2) > a"));
-        flightTitle.click();
+        flightTitle();
 
         Thread.sleep(2000);
 
@@ -97,4 +97,11 @@ public class FlightsTest extends BaseTest {
         //Select departData = new Select(driver.findElement(By.cssSelector("div.mewtwo-flights-dates-depart.mewtwo-flights-dates-depart--focused")));
         //departData.selectByVisibleText("#mewtwo-datepicker-2018-1-10 > div");
     }
+
+    public void flightTitle() {
+        WebElement flightTitle = driver.findElement(By.cssSelector("div.RTL_Bar.searcharea > div > ul > li:nth-child(2) > a"));
+        flightTitle.click();
+    }
+
+
 }
