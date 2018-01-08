@@ -36,5 +36,12 @@ public class TestDataProvider {
 
             }
 
+    @DataProvider (name = "Results")
+    public static Object[][] results() {
+
+        return new Object[][]{
+                {"div:nth-child(9) > div > ins"}, {"div:nth-child(7) > div > ins"}, {"div:nth-child(9) > div > ins"}};
+    }
+
 
 }

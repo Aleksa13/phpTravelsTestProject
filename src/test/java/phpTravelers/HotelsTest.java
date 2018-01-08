@@ -5,9 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import javax.xml.transform.Result;
-import java.util.List;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -21,11 +18,11 @@ public class HotelsTest extends BaseTest {
 
         @BeforeMethod(alwaysRun = true)
 
+
     public void openMainPage() throws InterruptedException {
             firstPage = new MainPage(driver);
             firstPage.openPage("http://www.phptravels.net/");
         }
-
 
 
     @Test
@@ -45,11 +42,10 @@ public class HotelsTest extends BaseTest {
                 .checkOutDate(checkOutDates);
 
         Thread.sleep(2000);
-                firstPage.childIndex(childIndex);
 
-
-        firstPage.kidsAge(index)
-                 .clickDoneButton();
+        firstPage.childIndex(childIndex)
+                .kidsAge(index)
+                .clickDoneButton();
 
         Thread.sleep(2000);
 
@@ -59,7 +55,6 @@ public class HotelsTest extends BaseTest {
         assertTrue(url.contains( "http://www.phptravels.net/properties/search?city="), "phpSearch page opened fail");
     }
 
- @Test
 
      public void openResultsPage() throws InterruptedException {
             secondPage = new ResultsPage(driver);
@@ -69,17 +64,14 @@ public class HotelsTest extends BaseTest {
 
      }
 
-     @Test
-     public void resultsTest() {
+     @Test(dataProvider = "Results", dataProviderClass = TestDataProvider.class)
+     public void resultsTest(String stars) {
 
-         WebElement filterButton = driver.findElement(By.cssSelector("div:nth-child(4) > div > a"));
-         filterButton.click();
+         secondPage
+                 .clickFilterButton()
+                 .selectStars(stars)
+                 .clickSearchButton();
 
-         WebElement selectStars = driver.findElement(By.cssSelector("div.hpadding20 > div > div:nth-child(9) > div"));
-         selectStars.click();
-
-         WebElement searchButton = driver.findElement(By.cssSelector("#searchform"));
-         searchButton.click();
 
          //List<WebElements>??
 
@@ -89,5 +81,7 @@ public class HotelsTest extends BaseTest {
 
 
      }
+
+
 }
 

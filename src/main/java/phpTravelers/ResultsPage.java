@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import javax.xml.transform.Result;
 import java.util.List;
 
 /**
@@ -20,6 +21,23 @@ public class ResultsPage extends AbstractWebPage{
 //    }
 
 
+    public ResultsPage clickSearchButton() {
+    WebElement searchButton = driver.findElement(By.cssSelector("#searchform"));
+    searchButton.click();
+    return this;
+    }
+
+    public ResultsPage selectStars(String stars) {
+        WebElement selectStars = driver.findElement(By.cssSelector("div.hpadding20 > div > div:nth-child(9) > div"));
+        selectStars.click();
+        return this;
+    }
+
+    public ResultsPage clickFilterButton() {
+        WebElement filterButton = driver.findElement(By.cssSelector("div:nth-child(4) > div > a"));
+        filterButton.click();
+        return this;
+    }
 
 }
 
