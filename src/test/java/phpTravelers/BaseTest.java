@@ -28,13 +28,13 @@ public class BaseTest {
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
-    @BeforeMethod(alwaysRun = true)
-    public void openMainPage(){
-        //Open page
-        //driver.get("http://phptravels.net/admin");
-        driver.get("http://www.phptravels.net/");
-
-    }
+//    @BeforeMethod(alwaysRun = true)
+//    public void openMainPage(){
+//        //Open page
+//        //driver.get("http://phptravels.net/admin");
+//        driver.get("http://www.phptravels.net/");
+//
+//    }
 
     @AfterClass(alwaysRun = true)
     public void tearDown()

@@ -3,6 +3,7 @@ package phpTravelers;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -12,22 +13,27 @@ import static org.testng.Assert.assertTrue;
 /**
  * Created by Aleksandra on 07.01.18.
  */
-public class phpJourney extends BaseTest {
+public class HotelsTest extends BaseTest {
+    MainPage firstPage;
+        @BeforeMethod(alwaysRun = true)
+    public void openMainPage() throws InterruptedException {
+        //Open page
+            firstPage = new MainPage(driver);
+        firstPage.openPage("http://www.phptravels.net/");
 
+    }
     @Test
     public void mainPageTest() {
         //check that main page is opened
 
-        String url = driver.getCurrentUrl();
+        String url = firstPage.getPageUrl();
         assertEquals(url, "http://www.phptravels.net/", "phpBooking page opened fail");
     }
 
-    @Test //(dataProvider = "Hotels", dataProviderClass = TestDataProvider.class)
-    public void hotelsTest (//int checkinDate , int checkOutDate)
-                            )throws InterruptedException {
+    @Test (dataProvider = "Hotels", dataProviderClass = TestDataProvider.class)
+    public void hotelsTest (String checkinDates , String checkOutDates, int childIndex)throws InterruptedException {
         //check Hotels
-        WebElement hotelTitle = driver.findElement(By.cssSelector("div.RTL_Bar.searcharea > div > ul > li.active > a"));
-        hotelTitle.click();
+        firstPage.selectHotelTitle();
 
         WebElement enterCity = driver.findElement(By.cssSelector("div #citiesInput"));
         enterCity.click();
@@ -37,19 +43,19 @@ public class phpJourney extends BaseTest {
         WebElement checkInDate = driver.findElement(By.cssSelector("#dpean1 > input"));
         checkInDate.click();
         checkInDate.clear();
-        checkInDate.sendKeys("01/23/2018");
+        checkInDate.sendKeys(checkinDates);
 
 
         WebElement checkOutDate =driver.findElement(By.cssSelector("#dpd2 > input"));
         checkOutDate.click();
         checkOutDate.clear();
-        checkOutDate.sendKeys("01/31/2018");
+        checkOutDate.sendKeys(checkOutDates);
         //checkInDate.click();
 
 
 
         Select childCount =new Select(driver.findElement(By.id("child")));
-        childCount.selectByIndex(1);
+        childCount.selectByIndex(childIndex);
 
         Thread.sleep(2000);
 
@@ -78,6 +84,8 @@ public class phpJourney extends BaseTest {
         String url = driver.getCurrentUrl();
         assertTrue(url.contains( "http://www.phptravels.net/properties/search?city="), "phpSearch page opened fail");
     }
+
+
 
 
 //    @Test

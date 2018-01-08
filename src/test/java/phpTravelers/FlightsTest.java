@@ -5,6 +5,7 @@ import javafx.scene.web.WebView;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.awt.*;
@@ -17,6 +18,14 @@ import static org.testng.Assert.assertTrue;
  * Created by Aleksandra on 07.01.18.
  */
 public class FlightsTest extends BaseTest {
+
+        @BeforeMethod(alwaysRun = true)
+    public void openMainPage(){
+        //Open page
+        driver.get("http://www.phptravels.net/");
+
+  }
+
 
     @Test
     public void mainPageTest() {
@@ -32,6 +41,22 @@ public class FlightsTest extends BaseTest {
         flightTitle.click();
 
         Thread.sleep(2000);
+
+        WebElement departDate = driver.findElement(By.cssSelector(".mewtwo-flights-dates .mewtwo-flights-dates-depart"));
+        departDate.click();
+
+        driver.switchTo().activeElement();
+
+        WebElement enterDate = driver.findElement(By.id("mewtwo-datepicker-2018-1-23"));
+        enterDate.click();
+
+
+        WebElement returnDate = driver.findElement(By.id("mewtwo-datepicker-2018-1-27"));
+        returnDate.click();
+
+        driver.switchTo().activeElement();
+
+
 
         WebElement destinationCity = driver.findElement(By.name("destination_name"));
         destinationCity.click();
@@ -58,16 +83,16 @@ public class FlightsTest extends BaseTest {
 
 
         Thread.sleep(3000);
-        driver.get("http://www.flights.phptravels.net/");
+        ArrayList<String> tabs2 = new ArrayList<String> (driver.getWindowHandles());
+        driver.switchTo().window(tabs2.get(1));
         Thread.sleep(3000);
 
 
         String url = driver.getCurrentUrl();
-        assertTrue(url.contains("http://www.flights.phptravels.net/"),"flights page is not opened");
+        assertTrue(url.contains("http://flights.phptravels.net/"),url);
 
 
-        //WebElement departDate = driver.findElement(By.cssSelector(" div.mewtwo-flights-dates-depart.mewtwo-flights-dates-depart--focused"));
-        //departDate.click();
+
 
         //Select departData = new Select(driver.findElement(By.cssSelector("div.mewtwo-flights-dates-depart.mewtwo-flights-dates-depart--focused")));
         //departData.selectByVisibleText("#mewtwo-datepicker-2018-1-10 > div");

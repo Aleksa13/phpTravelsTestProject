@@ -16,9 +16,14 @@ import static org.testng.Assert.assertTrue;
 /**
  * Created by Aleksandra on 06.01.18.
  */
-public class phpTravelersTest extends BaseTest {
+public class AdminTest extends BaseTest {
 
+        @BeforeMethod(alwaysRun = true)
+    public void openMainPage(){
+        //Open page
+        driver.get("http://phptravels.net/admin");
 
+    }
     @Test
     public void mainPageTest() {
         //check that main page is opened
