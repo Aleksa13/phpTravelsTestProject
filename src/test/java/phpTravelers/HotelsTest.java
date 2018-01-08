@@ -2,9 +2,11 @@ package phpTravelers;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import javax.xml.transform.Result;
+import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -15,13 +17,17 @@ import static org.testng.Assert.assertTrue;
  */
 public class HotelsTest extends BaseTest {
     MainPage firstPage;
-        @BeforeMethod(alwaysRun = true)
-    public void openMainPage() throws InterruptedException {
-        //Open page
-            firstPage = new MainPage(driver);
-        firstPage.openPage("http://www.phptravels.net/");
+    ResultsPage secondPage;
 
-    }
+        @BeforeMethod(alwaysRun = true)
+
+    public void openMainPage() throws InterruptedException {
+            firstPage = new MainPage(driver);
+            firstPage.openPage("http://www.phptravels.net/");
+        }
+
+
+
     @Test
     public void mainPageTest() {
         //check that main page is opened
@@ -31,67 +37,57 @@ public class HotelsTest extends BaseTest {
     }
 
     @Test (dataProvider = "Hotels", dataProviderClass = TestDataProvider.class)
-    public void hotelsTest (String checkinDates , String checkOutDates, int childIndex)throws InterruptedException {
+    public void hotelsTest(String name, String checkInDates, String checkOutDates, int childIndex, int index)throws InterruptedException {
         //check Hotels
-        firstPage.selectHotelTitle();
+        firstPage.selectHotelTitle()
+                .enterCity(name)
+                .checkInDate(checkInDates)
+                .checkOutDate(checkOutDates);
 
-        WebElement enterCity = driver.findElement(By.cssSelector("div #citiesInput"));
-        enterCity.click();
-        enterCity.clear();
-        enterCity.sendKeys("London");
-
-        WebElement checkInDate = driver.findElement(By.cssSelector("#dpean1 > input"));
-        checkInDate.click();
-        checkInDate.clear();
-        checkInDate.sendKeys(checkinDates);
+        Thread.sleep(2000);
+                firstPage.childIndex(childIndex);
 
 
-        WebElement checkOutDate =driver.findElement(By.cssSelector("#dpd2 > input"));
-        checkOutDate.click();
-        checkOutDate.clear();
-        checkOutDate.sendKeys(checkOutDates);
-        //checkInDate.click();
-
-
-
-        Select childCount =new Select(driver.findElement(By.id("child")));
-        childCount.selectByIndex(childIndex);
+        firstPage.kidsAge(index)
+                 .clickDoneButton();
 
         Thread.sleep(2000);
 
-        Select kidsAge = new Select(driver.findElement(By.cssSelector("#ages > div > div > div.modal-body > div > div > select")));
-        kidsAge.selectByIndex(2);
-
-        WebElement agesDoneButton = driver.findElement(By.cssSelector("#ages > div > div > div.modal-footer > button"));
-        agesDoneButton.click();
-
-
-        Thread.sleep(2000);
-
-        WebElement searchButton = driver.findElement(By.cssSelector("div.bgfade.col-md-4.col-xs-12 > button"));
-        searchButton.click();
-
-
-
-        //Select enterDay = new Select(driver.findElement(By.cssSelector("body > div:nth-child(17)")));
-        //enterDay.enterDay ("body > div:nth-child(17) > div.datepicker-days > table > tbody > tr:nth-child(3) > td:nth-child(4)");
-
-//    }
-//
-//    @Test
-//    public void TestSearchPage () throws InterruptedException {
+        firstPage.clickSearchButton();
 
         String url = driver.getCurrentUrl();
         assertTrue(url.contains( "http://www.phptravels.net/properties/search?city="), "phpSearch page opened fail");
     }
 
+ @Test
+
+     public void openResultsPage() throws InterruptedException {
+            secondPage = new ResultsPage(driver);
+
+        String url = secondPage.getPageUrl();
+        assertTrue(url.contains( "http://www.phptravels.net/properties/search?city="), "phpSearch page opened fail");
+
+     }
+
+     @Test
+     public void resultsTest() {
+
+         WebElement filterButton = driver.findElement(By.cssSelector("div:nth-child(4) > div > a"));
+         filterButton.click();
+
+         WebElement selectStars = driver.findElement(By.cssSelector("div.hpadding20 > div > div:nth-child(9) > div"));
+         selectStars.click();
+
+         WebElement searchButton = driver.findElement(By.cssSelector("#searchform"));
+         searchButton.click();
+
+         //List<WebElements>??
+
+         WebElement searchResult1 = driver.findElement(By.cssSelector(" tr:nth-child(1) > td > div.col-md-4.col-xs-5.go-right.rtl_pic > div > a > img"));
+         WebElement searchResult2 = driver.findElement(By.cssSelector(" tr:nth-child(2) > td > div.col-md-4.col-xs-5.go-right.rtl_pic > div > a > img"));
+         WebElement searchResult3 = driver.findElement(By.cssSelector(" tr:nth-child(3) > td > div.col-md-4.col-xs-5.go-right.rtl_pic > div > a > img"));
 
 
-
-//    @Test
-//    public void FlightsTest() throws InterruptedException {
-
-
-
-
+     }
 }
+
